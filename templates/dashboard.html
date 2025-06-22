@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Ürünler
+{% endblock %}
+
+{% block main %}
+
+<div class="container">
+    <div class="row mb-3 mt-3">
+        <div class="col-md-12">
+            <h2 class="mb-4 p-2">Ürün Ekle</h2>
+            <form action="/dashboard" method="post" class="row g-3">
+                <div class="col-md-2">
+                    <label for="Pname" class="form-label">İsim</label>
+                    <input type="text" class="form-control" name="product_name" id="Pname" autocomplete="off">
+                </div>
+                <div class="col-md-2">
+                    <label for="Ptype" class="form-label">Ürün Türü</label>
+                    <input type="text" class="form-control" name="product_type" id="Ptype" autocomplete="off">
+                </div>
+                <div class="col-md-2">
+                    <label for="Pprice" class="form-label">Fiyat</label>
+                    <input type="number" step="0.01" class="form-control" name="price" id="Pprice" autocomplete="off">
+                </div>
+                <div class="col-md-2">
+                    <label for="Pamount" class="form-label">Adet</label>
+                    <input type="number" class="form-control" name="amount" id="Pamount" autocomplete="off">
+                </div>
+                <div class="col-md-2">
+                    <label for="inputState" class="form-label">1. el / 2. el</label>
+                    <select id="inputState" class="form-select" name="is_second_hand">
+                        <option selected disabled>Seçiniz</option>
+                        <option value="0">1. el</option>
+                        <option value="1">2. el</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="date" class="form-label">Alım Tarihi:</label>
+                    <input class="form-control global-datepicker" id="datepicker" name="date" placeholder="gg/aa/yyyy" autocomplete="off">
+                </div>
+                <div class="center-button my-4">
+                    <button class="btn btn-primary mx-auto py-2 px-3" type="submit">Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <header class="fw-medium text-center fs-3 pb-3 my-5">Alınanlar</header>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>İsim</th>
+                            <th>Ürün Türü</th>
+                            <th>Fiyat</th>
+                            <th>Kaçıncı El</th>
+                            <th>Alım Tarihi</th>
+                            <th>Adet</th>
+                            <th>Sat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table rows here -->
+                        {% for product in products %}
+
+                            <tr>
+                                {% for key in product %}
+                                    {% if key == 'is_second_hand' %}
+                                        {% if product['is_second_hand'] %}
+                                            <td class="text-center align-middle align-items-center">2. el</td>
+                                        {% else %}
+                                            <td class="text-center align-middle align-items-center">1. el</td>
+                                        {% endif %}
+                                    {% elif key == 'price' %}
+                                        {% if product['price'] is number %}
+                                            <td class="text-center align-middle align-items-center">{{ product['price'] | tl }}</td>
+                                        {% else %}
+                                            {{ product['price'] }}
+                                        {% endif %}
+                                    {% elif key == 'amount' %}
+                                        <td class="text-center align-middle align-items-center">{{ product[key] | capitalize }}</td>
+                                        <td class="text-center align-middle align-items-center">
+                                            <button class="btn btn-success px-3 mt-3 mb-3 toggle-button" type="button" data-bs-toggle="collapse" data-bs-target="#formoo{{ product['id'] }}" aria-expanded="false" aria-controls="formoo">Sat</button>
+                                        </td>
+                                    {% elif key == 'id' %}
+
+                                    {% else %}
+                                        <td class="text-center align-middle align-items-center">{{ product[key] | capitalize }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+
+                            <tr class="collapse" id="formoo{{ product['id'] }}">
+                                <td colspan="7">
+                                    <form action="/sell" method="post" class="row g-3 justify-content-center"> 
+                                        <div>
+                                            <input type="hidden" class="form-control" name="product_name" value="{{ product['name'] }}">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="priceP" class="form-label">Fiyat</label>
+                                            <input type="number" class="form-control" name="price" id="priceP" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="amountP" class="form-label">Adet</label>
+                                            <input type="number" class="form-control" name="amount" id="amountP" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="date2" class="form-label">Satım Tarihi:</label>
+                                            <input class="form-control global-datepicker" id="datepicker{{ product['id'] }}" name="date2" placeholder="gg/aa/yyyy" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-success mt-1 mb-4 px-3" type="submit">Sat</button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sell products manually -->
+    <div class="row mb-3 mt-3">
+        <div class="col-md-12">
+            <h2 class="mb-2 mt-5 p-2">Ürün Sat</h2>
+            <form action="/sell" method="post" class="row g-3">
+                <div class="col-md-3">
+                    <label for="nameP" class="form-label">İsim</label>
+                    <input type="text" class="form-control" name="product_name" id="nameP" autocomplete="off">
+                </div>
+                <div class="col-md-3">
+                    <label for="priceP" class="form-label">Fiyat</label>
+                    <input type="number" step="0.01" class="form-control" name="price" id="priceP" autocomplete="off">
+                </div>
+                <div class="col-md-3">
+                    <label for="amountP" class="form-label">Adet</label>
+                    <input type="number" class="form-control" name="amount" id="amountP" autocomplete="off">
+                </div>
+                <div class="col-md-3">
+                    <label for="date2" class="form-label">Satım Tarihi:</label>
+                    <input class="form-control global-datepicker" id="datepicker2" name="date2" placeholder="gg/aa/yyyy" autocomplete="off">
+                </div>
+                <div class="center-button my-4">
+                    <button class="btn btn-primary mx-auto py-2 px-3" type="submit">Sat</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

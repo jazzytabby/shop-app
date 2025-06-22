@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Kayıt Ol
+{% endblock %}
+
+{% block main %}
+    <form action="/register" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Kullanıcı adı" type="text">
+        </div>
+        <div class="mb-3">
+            <input autocomplete="off" class="form-control mx-auto w-auto" name="email" placeholder="E-Posta" type="email">
+        </div>
+        <div class="mb-3">
+            <input autocomplete="off" class="form-control mx-auto w-auto see-pass" name="password" placeholder="Şifre" type="password" aria-describedby="passHelp">
+        </div>
+        <div class="mb-4">
+            <input autocomplete="off" class="form-control mx-auto w-auto see-pass" name="confirmation" placeholder="Şifreyi Onaylayın" type="password">
+        </div>
+        <div id="passHelp" class="form-text mb-3">Şifre büyük ve küçük harfler içermeli ve en az 8 karakter olmalı</div>
+        <div class="mb-2 mt-2">
+            <input class="form-check-input showPasswordCheckbox" type="checkbox" id="showPasswordCheckbox">
+            <label class="form-check-label" for="showPasswordCheckbox">
+                Şifreyi Göster
+            </label>
+        </div>
+        <button class="btn btn-primary mt-3" type="submit">Kayıt Ol</button>
+    </form>
+{% endblock %}

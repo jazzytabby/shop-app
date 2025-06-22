@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Giriş Yap
+{% endblock %}
+
+{% block main %}
+    <form action="/login" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Kullanıcı adı" type="text">
+        </div>
+        <div class="mb-3">
+            <input autocomplete="off" class="form-control mx-auto w-auto see-pass" name="password" placeholder="Şifre" type="password" aria-describedby="reset">
+        </div>
+        <div class="mb-3">
+            <input class="form-check-input showPasswordCheckbox" type="checkbox" id="showPasswordCheckbox">
+            <label class="form-check-label" for="showPasswordCheckbox">
+                Şifreyi Göster
+            </label>
+        </div>
+        <div id="reset" class="form-text"><a href="/forgot_password" style="text-decoration: none;">Şifremi Unuttum</a></div>
+        <button class="btn btn-primary mt-3" type="submit">Giriş Yap</button>
+    </form>
+{% endblock %}

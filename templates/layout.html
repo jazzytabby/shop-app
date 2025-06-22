@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="tr">
+
+    <head>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width, shrink-to-fit=no">
+        
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+        <title>mhsb: {% block title %}{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="/static/accounting.png">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+        <!-- jQuery UI library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata&family=Open+Sans&family=Zilla+Slab+Highlight&display=swap" rel="stylesheet">
+
+        <!--CSS -->
+        <link rel="stylesheet" href="/static/style.css">
+
+    </head>
+
+    <body id="custom-main">
+
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="/static/logo.png" alt="logo" class="navbar-logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    {% if session["user_id"] %}
+                        <ul class="navbar-nav me-auto mt-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ url_for('dashboard')}}">Al / Sat</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('history') }}">İşlem Geçmişi</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('portfolio') }}" id="portfolio">Portföy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('change_password') }}">Şifre Değiştir</a>
+                        </li>
+                        <li class="nav-item ml-auto">
+                            <a class="nav-link" href="{{ url_for('logout') }}">Çıkış Yap</a>
+                        </li>
+                        </ul>
+                    {% else %}
+                        <ul class="navbar-nav ms-auto mt-2">
+                            <li class="nav-item removeId"><a class="nav-link" href="{{ url_for('register') }}">Kayıt Ol</a></li>
+                            <li class="nav-item removeId"><a class="nav-link" href="{{ url_for('login') }}">Giriş Yap</a></li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        {% if get_flashed_messages() %}
+            <header>
+                <div class="alert alert-primary mb-0 text-center" role="alert">
+                    {{ get_flashed_messages() | join(" ") }}
+                </div>
+            </header>
+        {% endif %}
+
+        <main id="1" class="container text-center">
+            {% block main %}{% endblock %}
+        </main>
+
+        {% if session["user_id"] %}
+        <script>
+            $(document).ready(function() {
+                $('#custom-main').removeAttr('id');
+            });
+        </script>
+        {% endif %}
+
+        <script>
+            $(document).ready(function() {
+                $(".global-datepicker").datepicker({
+                    dateFormat: "dd/mm/yy", // Set the date format
+                    prevText: "Önceki Ay", // Set the previous month button text
+                    nextText: "Sonraki Ay", // Set the next month button text
+                    dayNamesMin: ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"], // Set abbreviated day names
+                    monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"], // Set month names
+                    monthNamesShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"], // Set abbreviated month names
+                    firstDay: 1, // Set Monday as the first day of the week
+                    showOtherMonths: true, // Show days from other months
+                    selectOtherMonths: true, // Allow selecting days from other months
+                    changeMonth: true, // Allow changing months
+                    changeYear: true, // Allow changing years
+                });
+            });
+        </script>
+
+
+        <script>
+            $(document).ready(function() {
+                // Function to remove the ID
+                function removeCustomMainId() {
+                    $("#custom-main").removeAttr("id");
+                }
+
+                // Check the URL on page load and remove the ID if needed
+                var currentUrl = window.location.href;
+                if (currentUrl.includes("register") || currentUrl.includes("login") || currentUrl.includes("forgot_password")) {
+                    removeCustomMainId();
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Get the current path of the URL
+                var currentPath = window.location.pathname;
+                console.log(currentPath)
+
+                // Select all links with the class 'nav-link'
+                var navLinks = document.querySelectorAll('.nav-link');
+                console.log(navLinks)
+
+                // Remove the 'active' class from all links
+                navLinks.forEach(function(link) {
+                    link.classList.remove('active');
+                });
+
+                // Iterate over the links
+                navLinks.forEach(function(link) {
+                    // Check if the link's href matches the current path
+                    if (link.getAttribute('href') === currentPath) {
+                        // Add the 'active' class to the matching link
+                        link.classList.add('active');
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Attach the function to all checkboxes with the 'showPasswordCheckbox' class
+                var checkboxes = document.querySelectorAll('.showPasswordCheckbox');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        // Toggle password visibility on related password field
+                        togglePasswordVisibility(checkbox);
+                    });
+                });
+            });
+
+            // Function to toggle password visibility
+            function togglePasswordVisibility(checkbox) {
+                // Get the parent form element of the checkbox
+                var form = checkbox.closest('form');
+
+                // Get the password field related to the clicked checkbox within the same form
+                var passwordField = form.querySelector('.see-pass');
+                passwordField.type = (passwordField.type === 'password') ? 'text' : 'password';
+            }
+        </script>
+
+    </body>
+
+</html>

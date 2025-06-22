@@ -1,0 +1,52 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+nav.navbar {
+    margin-bottom: 0;
+}
+
+#custom-main {
+    max-width: none;
+    padding: 0;
+    background-image: url('bg.jpeg');
+    background-repeat: repeat;
+}
+
+h1, h2, form {
+    margin-top: 1.3em;
+}
+
+.change-pass {
+    margin-top: 3%;
+    padding: 3%;
+    font-size: large;
+}
+
+.navbar-logo {
+    width: 80px;
+    height: 48px;
+}
+
+.center-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+.hidden-row {
+      display: none;
+}
+
+.svg-container {
+    max-width: 100%;
+    height: auto;
+}
+
+img {
+    height: 50vw;
+}
+
+
+

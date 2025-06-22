@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portföy
+{% endblock %}
+
+{% block main %}
+    <h1>Portföy</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <header class="fw-medium text-center fs-2 pb-3 my-5">Toplam Ürün Sayısı</header>
+                <h1 class="p-2" style="background-color: #e9edf2;">{{ amount }}</h1>
+            </div>
+            <div class="col-md-6">
+                <div class="container mt-5">
+                    <header class="fw-medium text-center fs-2 pb-3 my-5">Ürün Türleri ve Yüzdeleri</header>
+                    <img src="/static/pie_chart.png" alt="Pie Chart" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <header class="fw-medium text-center fs-2 pb-3 my-5">Tarihler arasındaki kar-zarar:</header>
+            <div class="col-md-12">
+                <form action="/portfolio" method="post" class="row g-3">
+                    <label for="date" class="form-label col-md-12 fs-4">Tarih 1:</label>
+                    <input class="form-control global-datepicker col-md-6" id="datepicker4" name="date1" placeholder="gg/aa/yyyy" autocomplete="off">
+                    <label for="date" class="form-label col-md-12 fs-4">Tarih 2:</label>
+                    <input class="form-control global-datepicker col-md-6" id="datepicker5" name="date2" placeholder="gg/aa/yyyy" autocomplete="off">
+                    <div class="center-button my-4">
+                        <button class="btn btn-primary mx-auto py-2 px-3 my-2" type="submit">Ara</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {% if show_chart %}
+                    <div class="container mt-5 col-md-6">
+                        <header class="fw-medium text-center fs-2 pb-3 my-5">Kar-Zarar</header>
+                        <div class="svg-container mx-auto">
+                            {{ chart_data|safe }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
